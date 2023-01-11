@@ -41,6 +41,12 @@ pyenv install ${PYTHON_LATEST}
 pyenv global ${PYTHON_LATEST}
 #+END_SRC
 
+* Security Configuration
+
+#+BEGIN_SRC shell
+ssh-keygen -t rsa  # Generate SSH keypair
+#+END_SRC
+
 * Install Doom Emacs
 
 #+BEGIN_SRC shell
@@ -73,9 +79,9 @@ ln -s $(pwd)/dotfiles/zsh/zshrc ${HOME}/.zshrc
 ln -s $(pwd)/dotfiles/zsh/zprofile ${HOME}/.zprofile
 
 # Git configuration
-ln -s $(pwd)/git/gitconfig ${HOME}/.gitconfig
-ln -s $(pwd)/git/gitignore ${HOME}/.gitignore
+ln -s $(pwd)/dotfiles/git/gitconfig ${HOME}/.gitconfig
+ln -s $(pwd)/dotfiles/git/gitignore ${HOME}/.gitignore
 
 # Doom Configuration
-ln -s $(pwd)/doom-emacs ${HOME}/.doom.d
+ln -s $(pwd)/dotfiles/doom-emacs ${HOME}/.doom.d
 #+END_SRC
