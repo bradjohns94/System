@@ -1,0 +1,81 @@
+#+title: System Setup
+#+author: Bradley Johns
+
+* Overview
+
+A living document on how to setup a new development setup on a new macbook so
+I can stop mooching off config files I pull from other people. Below are a series of
+steps that I either did in order or should have done in this order to set up this
+computer so I can script this out and have automatic setups.
+
+* Set up omzsh
+
+#+BEGIN_SRC shell
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+#+END_SRC
+
+* Install Homebrew
+
+#+BEGIN_SRC shell
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/brad/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+#+END_SRC
+
+* Install Other Key Apps
+
+#+BEGIN_SRC shell
+brew install cmake  # Necessary to build things like vterm
+brew install wget
+#+END_SRC
+
+* Install Python
+
+#+BEGIN_SRC shell
+brew install openssl readline sqlite3 xz zlib
+brew install pyenv  # Python version manager
+pyenv install -l  # Download the list of python version
+
+PYTHON_LATEST=$(pyenv latest -k 3)  # Get the latest python 3.x.x version
+pyenv install ${PYTHON_LATEST}
+pyenv global ${PYTHON_LATEST}
+#+END_SRC
+
+* Install Doom Emacs
+
+#+BEGIN_SRC shell
+brew install git ripgrep coreutils fd  # Doom core requirements
+brew tap d12frosted/emacs-plus  # Setup core emacs
+brew install emacs-plus —with-debug —with-xwidgets —with-modern-doom3-icon
+ln -s /opt/homebrew/bin/emacs /Applications/Emacs.app  # Add emacs to Applications
+
+git clone https://github.com/hlissner/doom-emacs ~/.emacs.d  # Actually pull doom emacs
+~/.emacs.d/bin/doom install
+#+END_SRC
+
+* Install Docker (AMD Chip Specific)
+
+#+BEGIN_SRC shell
+softwareupdate --install-rosetta
+
+wget https://desktop.docker.com/mac/main/arm64/Docker.dmg
+sudo hdiutil attach Docker.dmg
+sudo /Volumes/Docker/Docker.app/Contents/MacOS/install
+sudo hdiutil detach /Volumes/Docker
+rm Docker.dmg
+#+END_SRC
+
+* Link Dotfiles
+
+#+BEGIN_SRC shell
+# ZSH Configurations
+ln -s $(pwd)/dotfiles/zsh/zshrc ${HOME}/.zshrc
+ln -s $(pwd)/dotfiles/zsh/zprofile ${HOME}/.zprofile
+
+# Git configuration
+ln -s $(pwd)/git/gitconfig ${HOME}/.gitconfig
+ln -s $(pwd)/git/gitignore ${HOME}/.gitignore
+
+# Doom Configuration
+ln -s $(pwd)/doom-emacs ${HOME}/.doom.d
+#+END_SRC
